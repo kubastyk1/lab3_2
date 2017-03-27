@@ -8,6 +8,15 @@ import java.util.List;
  */
 public class TestablePublishableNews extends PublishableNews {
     private final List<String> publicContent = new ArrayList<>();
+
+    public List<String> getSubscribentContent() {
+        return subscribentContent;
+    }
+
+    public List<String> getPublicContent() {
+        return publicContent;
+    }
+
     private final List<String> subscribentContent = new ArrayList<>();
 
     @Override
