@@ -11,9 +11,8 @@ import org.powermock.reflect.Whitebox;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 /**
  * Created by Sasho on 2017-03-27.
@@ -22,13 +21,13 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @RunWith(PowerMockRunner.class)
 public class NewsLoaderTest {
     private NewsLoader newsLoader;
+    private String readerType = "dummyReader";
     private IncomingNews incomingNews = new IncomingNews();
     private IncomingInfo incomingInfoPub = new IncomingInfo("incomingInfoPub", SubsciptionType.NONE);
     private IncomingInfo incomingInfoSubC = new IncomingInfo("incomingInfoSubB", SubsciptionType.C);
 
     @Before
     public void setUp() throws Exception {
-        String readerType = "dummyReader";
         mockStatic(ConfigurationLoader.class);
         ConfigurationLoader mockLoader = mock(ConfigurationLoader.class);
         when(ConfigurationLoader.getInstance()).thenReturn(mockLoader);
@@ -65,5 +64,12 @@ public class NewsLoaderTest {
         assertThat(testablePublishableNews.getSubscribentContent(), not(hasItem(incomingInfoPub.getContent())));
         assertThat(testablePublishableNews.getPublicContent(), not(hasItem(incomingInfoSubC.getContent())));
         assertThat(testablePublishableNews.getSubscribentContent(), hasItem(incomingInfoSubC.getContent()));
+    }
+
+    @Test
+    public void test_verification() throws Exception {
+        newsLoader.loadNews();
+        verifyStatic( times(1));
+        NewsReaderFactory.getReader(readerType);
     }
 }
