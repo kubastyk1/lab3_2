@@ -14,6 +14,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.times;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 /**
@@ -80,6 +81,13 @@ public class NewsLoaderTest {
 		assertThat(news.getSubscribentContent(), hasItem(infoSubA.getContent()));
 		assertThat(news.getSubscribentContent(), hasItem(infoSubB.getContent()));
 		assertThat(news.getSubscribentContent(), hasItem(infoSubC.getContent()));
+	}
+
+	@Test
+	public void loadNews_publishNewsCreateFunctionCalledOnce() throws Exception {
+		newsLoader.loadNews();
+		verifyStatic(times(1));
+		PublishableNews.create();
 	}
 
 }
