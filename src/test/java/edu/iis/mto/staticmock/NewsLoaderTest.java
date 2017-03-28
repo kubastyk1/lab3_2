@@ -72,6 +72,16 @@ public class NewsLoaderTest {
 		assertThat(news.getPublicContent(), not(hasItem(infoSubC.getContent())));
 	}
 
+	@Test
+	public void loadNews_subscribentContentHasOnlySubscribedNews() throws Exception {
+		PublishableNewsTester news = (PublishableNewsTester) newsLoader.loadNews();
+
+		assertThat(news.getSubscribentContent(), not(hasItem(infoPublic.getContent())));
+		assertThat(news.getSubscribentContent(), hasItem(infoSubA.getContent()));
+		assertThat(news.getSubscribentContent(), hasItem(infoSubB.getContent()));
+		assertThat(news.getSubscribentContent(), hasItem(infoSubC.getContent()));
+	}
+
 }
 
 class PublishableNewsTester extends PublishableNews {
