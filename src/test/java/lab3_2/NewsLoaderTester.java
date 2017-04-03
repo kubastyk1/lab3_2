@@ -21,16 +21,13 @@ import edu.iis.mto.staticmock.reader.FileNewsReader;
 import edu.iis.mto.staticmock.reader.NewsReader;
 
 import static org.powermock.api.mockito.PowerMockito.*;
+import static org.mockito.Mockito.times;
 import org.mockito.internal.util.reflection.*;
 
 import static org.hamcrest.CoreMatchers.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest( {
-	ConfigurationLoader.class,
-	NewsReaderFactory.class,
-	PublishableNews.class
-})
+@PrepareForTest( {	ConfigurationLoader.class, NewsReaderFactory.class, PublishableNews.class	})
 
 public class NewsLoaderTester {
 	
@@ -59,7 +56,7 @@ public class NewsLoaderTester {
 	}
 	
 	@Test
-	public void testContentDivision() {
+	public void testContentDivision() throws Exception {
 		NewsLoader newsLoader = new NewsLoader();
 		PublishableNews publishableNews = newsLoader.loadNews();
 		
@@ -70,4 +67,13 @@ public class NewsLoaderTester {
 		assertThat(publishableNews.getSubscribentContent().get(0),is(equalTo("subscription info 1")));
 		assertThat(publishableNews.getSubscribentContent().get(1),is(equalTo("subscription info 2")));
 	}
+	
+	@Test
+	public void testGetReaderCalledOnce() {
+		NewsLoader newsLoader = new NewsLoader();
+		newsLoader.loadNews();
+		verifyStatic(times(1));
+		NewsReaderFactory.getReader("test");
+	}
+	
 }
