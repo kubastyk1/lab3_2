@@ -50,7 +50,7 @@ public class NewsLoaderTester {
 		IncomingNews incomingNews = new IncomingNews();
 		incomingNews.add(new IncomingInfo("public info 1", SubsciptionType.NONE));
 		incomingNews.add(new IncomingInfo("public info 2", SubsciptionType.NONE));
-		incomingNews.add(new IncomingInfo("subscription info 2", SubsciptionType.A));
+		incomingNews.add(new IncomingInfo("subscription info 1", SubsciptionType.A));
 		incomingNews.add(new IncomingInfo("subscription info 2", SubsciptionType.B));
 		when(newsReader.read()).thenReturn(incomingNews);
 		
@@ -59,10 +59,15 @@ public class NewsLoaderTester {
 	}
 	
 	@Test
-	public void test() {
+	public void testContentDivision() {
 		NewsLoader newsLoader = new NewsLoader();
 		PublishableNews publishableNews = newsLoader.loadNews();
 		
-		//System.out.println(publishableNews.getPublicContent().toString());
+		assertThat(publishableNews.getPublicContent().size(),is(equalTo(2)));
+		assertThat(publishableNews.getSubscribentContent().size(),is(equalTo(2)));
+		assertThat(publishableNews.getPublicContent().get(0),is(equalTo("public info 1")));
+		assertThat(publishableNews.getPublicContent().get(1),is(equalTo("public info 2")));
+		assertThat(publishableNews.getSubscribentContent().get(0),is(equalTo("subscription info 1")));
+		assertThat(publishableNews.getSubscribentContent().get(1),is(equalTo("subscription info 2")));
 	}
 }
