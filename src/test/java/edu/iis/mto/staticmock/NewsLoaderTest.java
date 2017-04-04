@@ -8,6 +8,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -56,6 +57,18 @@ public class NewsLoaderTest {
         List<String> result = (List<String>) Whitebox.getInternalState(publishableNews, "publicContent");
         assertThat(result.size(), is(1));
         assertThat(result, not(hasItem(subInfo.getContent())));
+    }
+
+
+    private PublishableNews getPublishableNewsMockWithOverrideAddForSubMethod() {
+        return new PublishableNews() {
+            private final List<String> subscribentContent = new ArrayList<>();
+
+            @Override
+            public void addForSubscription(String content, SubsciptionType subscriptionType) {
+                this.subscribentContent.add(content);
+            }
+        };
     }
 
 
