@@ -2,11 +2,18 @@ package edu.iis.mto.staticmock;
 
 import edu.iis.mto.staticmock.reader.NewsReader;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 @RunWith(PowerMockRunner.class)
@@ -40,6 +47,15 @@ public class NewsLoaderTest {
         when(configurationMockLoader.loadConfiguration()).thenReturn(configuration);
         when(NewsReaderFactory.getReader(testReaderType)).thenReturn(newsReaderMock);
 
+    }
+
+
+    @Test
+    public void testNewsLoaderLoadNewsCheckPublicNews() {
+        PublishableNews publishableNews = newsLoader.loadNews();
+        List<String> result = (List<String>) Whitebox.getInternalState(publishableNews, "publicContent");
+        assertThat(result.size(), is(1));
+        assertThat(result, not(hasItem(subInfo.getContent())));
     }
 
 
