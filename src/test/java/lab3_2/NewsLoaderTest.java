@@ -1,13 +1,9 @@
 package lab3_2;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.times;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.List;
 
@@ -87,4 +83,10 @@ public class NewsLoaderTest {
         assertThat(subscribentContent.get(0), is(equalTo("subscription")));
     }
 
+    @Test
+    public void publishableNews_createCalledOneTime() {
+
+        verifyStatic(times(1));
+        PublishableNews.create();
+    }
 }
