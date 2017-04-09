@@ -1,5 +1,6 @@
 package lab3_2;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -67,4 +68,14 @@ public class NewsLoaderTest {
         publicContent = Whitebox.getInternalState(publishableNews, "publicContent");
         subscribentContent = Whitebox.getInternalState(publishableNews, "subscribentContent");
 	}
+
+    @Test
+    public void publishableNews_publicContentTest() {
+
+        assertThat(publicContent.size(), is(1));
+        assertThat(publicContent, hasItem(pubInfo.getContent()));
+        assertThat(publicContent, not(hasItem(subInfo.getContent())));
+        assertThat(publicContent.get(0), is(equalTo("public")));
+    }
+
 }
