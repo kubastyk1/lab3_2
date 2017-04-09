@@ -78,4 +78,13 @@ public class NewsLoaderTest {
         assertThat(publicContent.get(0), is(equalTo("public")));
     }
 
+    @Test
+    public void publishableNews_subscriptionContentTest() {
+
+        assertThat(subscribentContent.size(), is(1));
+        assertThat(subscribentContent, hasItem(subInfo.getContent()));
+        assertThat(subscribentContent, not(hasItem(pubInfo.getContent())));
+        assertThat(subscribentContent.get(0), is(equalTo("subscription")));
+    }
+
 }
